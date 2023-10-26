@@ -13,8 +13,7 @@ export const getRequestOptions = async (
 
   const params: RequestOptions = {
     url,
-    stealth:
-      (url.searchParams.get("stealth") || "true").toLowerCase() === "true",
+    stealth: url.searchParams.get("stealth")?.toLowerCase() === "true",
   };
 
   params.proxy = await parseProxyURL(url.searchParams.get("proxy") || "");

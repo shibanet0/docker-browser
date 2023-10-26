@@ -133,6 +133,7 @@ export const customOptionsAutoScroll = Joi.object<
 export const customOptions = Joi.object<CustomOptions, true>({
   autoScroll: customOptionsAutoScroll,
   blockResource: customOptionsBlockResource,
+  checkIsGoToOk: Joi.boolean(),
 });
 
 export const screenshotRequest = Joi.object<ScreenshotRequest, true>({

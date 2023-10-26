@@ -3,6 +3,7 @@ import { utils } from "../utils/index.js";
 import Joi from "joi";
 import { TimeoutError, CancelledError, OverfilledError } from "../queue.js";
 import { checkIsAuthorized } from "../checkIsAuthorized.js";
+import { PageGotoError } from "../browser/ext/index.js";
 
 export type Method = "GET" | "POST";
 
@@ -87,8 +88,21 @@ export const handleRequest = async (
       return;
     }
 
+    if (err instanceof PageGotoError) {
+      res.statusCode = err.status;
+      if (err.content) {
+        res.setHeader("Content-Type", "text/html");
+        res.end(err.content);
+      } else {
+        res.setHeader("Content-Type", "application/json");
+        res.end(JSON.stringify({ message: err.statusText }));
+      }
+      return;
+    }
+
     res.statusCode = 500;
-    res.end();
+    res.setHeader("Content-Type", "application/json");
+    res.end(JSON.stringify({ message: err?.message || err }));
   });
 };
 

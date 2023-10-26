@@ -3,11 +3,11 @@ import { CustomOptionsAutoScroll } from "../../apiTypes.js";
 
 export const pageAutoScroll = async (
   page: Page,
-  options: CustomOptionsAutoScroll
+  options: CustomOptionsAutoScroll | undefined
 ) => {
-  await page.evaluate(async () => {
-    const frequency = options.frequency || 100;
-    const timing = options.timing || 100;
+  await page.evaluate(async (options: CustomOptionsAutoScroll | undefined) => {
+    const frequency = options?.frequency || 100;
+    const timing = options?.timing || 100;
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     let resolve = (value: unknown) => {
@@ -26,6 +26,7 @@ export const pageAutoScroll = async (
 
         if (scrolls < frequency) {
           scrolls += 1;
+
           scroll();
         }
 
@@ -33,8 +34,9 @@ export const pageAutoScroll = async (
         if (scrolls === frequency) resolve(true);
       }, timing);
     };
+
     scroll();
 
     await deferred;
-  });
+  }, options);
 };

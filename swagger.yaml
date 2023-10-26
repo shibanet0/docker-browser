@@ -717,6 +717,8 @@ components:
     CustomOptions:
       type: object
       properties:
+        checkIsGoToOk:
+          type: boolean
         autoScroll:
           $ref: "#/components/schemas/AutoScrollOptions"
         blockResource:

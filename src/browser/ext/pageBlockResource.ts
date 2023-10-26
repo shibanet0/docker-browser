@@ -3,9 +3,9 @@ import { CustomOptionsBlockResource } from "../../apiTypes.js";
 
 export const pageBlockResource = async (
   page: Page,
-  list: CustomOptionsBlockResource[]
+  list: CustomOptionsBlockResource[]|undefined
 ) => {
-  for (const rule of list) {
+  for (const rule of (list||[])) {
     await page.route(rule.url, (route) => {
       const resourceType = route.request().resourceType();
 
