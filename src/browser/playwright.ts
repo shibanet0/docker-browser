@@ -36,10 +36,7 @@ export const launchServer = async (
 ) => {
   const requestOptions = await getRequestOptions(req);
 
-  const browserServer = await (requestOptions.stealth
-    ? getStealthPlaywright(browserType)
-    : playwright[browserType]
-  )
+  const browserServer = await playwright[browserType]
     .launchServer({
       ...mergeLaunchOptions(browserType, options),
       proxy: requestOptions.proxy,
