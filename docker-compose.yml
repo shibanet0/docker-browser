@@ -1,0 +1,11 @@
+services:
+  app:
+    # platform: linux/amd64
+    build:
+      context: .
+    ports:
+      - 8080:8080
+    # environment:
+    #   - DEBUG=pw:browser
+    # volumes:
+    #   - "./src:/app/src"
