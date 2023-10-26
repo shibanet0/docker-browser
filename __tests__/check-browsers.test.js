@@ -19,7 +19,12 @@ const appURL = `ws://${env.host === "0.0.0.0" ? "127.0.0.1" : env.host}:${
   env.port
 }`;
 
-const appServer = exec("node --enable-source-maps ./dist/index.js");
+const appServer = exec("node --enable-source-maps ./dist/index.js", {
+  env: {
+    MAX_QUEUE_LENGTH: "5",
+    MAX_PARALLEL_SESSIONS: "5",
+  },
+});
 
 beforeAll(async () => {
   await new Promise((resolve) => {
