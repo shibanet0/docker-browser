@@ -717,10 +717,42 @@ components:
     CustomOptions:
       type: object
       properties:
+        pageDefaultTimeout:
+          type: number
+          description: |-
+            This setting will change the default maximum time for all the methods accepting `timeout` option.
+
+            **NOTE**
+            [page.setDefaultNavigationTimeout(timeout)](https://playwright.dev/docs/api/class-page#page-set-default-navigation-timeout)
+            takes priority over
+            [page.setDefaultTimeout(timeout)](https://playwright.dev/docs/api/class-page#page-set-default-timeout).
+
+            [Maximum time in milliseconds]
+        pageDefaultNavigationTimeout:
+          type: number
+          description: |-
+            This setting will change the default maximum navigation time for the following methods and related shortcuts:
+            - [page.goBack([options])](https://playwright.dev/docs/api/class-page#page-go-back)
+            - [page.goForward([options])](https://playwright.dev/docs/api/class-page#page-go-forward)
+            - [page.goto(url[, options])](https://playwright.dev/docs/api/class-page#page-goto)
+            - [page.reload([options])](https://playwright.dev/docs/api/class-page#page-reload)
+            - [page.setContent(html[, options])](https://playwright.dev/docs/api/class-page#page-set-content)
+            - [page.waitForNavigation([options])](https://playwright.dev/docs/api/class-page#page-wait-for-navigation)
+            - [page.waitForURL(url[, options])](https://playwright.dev/docs/api/class-page#page-wait-for-url)
+
+            **NOTE**
+            [page.setDefaultNavigationTimeout(timeout)](https://playwright.dev/docs/api/class-page#page-set-default-navigation-timeout)
+            takes priority over
+            [page.setDefaultTimeout(timeout)](https://playwright.dev/docs/api/class-page#page-set-default-timeout),
+            [browserContext.setDefaultTimeout(timeout)](https://playwright.dev/docs/api/class-browsercontext#browser-context-set-default-timeout)
+            and
+            [browserContext.setDefaultNavigationTimeout(timeout)](https://playwright.dev/docs/api/class-browsercontext#browser-context-set-default-navigation-timeout).
+
+            [Maximum time in milliseconds]
         checkIsGoToOk:
           type: boolean
         autoScroll:
-          $ref: "#/components/schemas/AutoScrollOptions"
+          $ref: "#/components/schemas/CustomOptionsAutoScroll"
         blockResource:
           type: array
           items:

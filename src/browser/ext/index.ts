@@ -4,6 +4,14 @@ import { pageAutoScroll } from "./pageAutoScroll.js";
 import { pageBlockResource } from "./pageBlockResource.js";
 
 export const pageBeforeGoto = async (page: Page, options?: CustomOptions) => {
+  if (typeof options?.pageDefaultNavigationTimeout === "number") {
+    await page.setDefaultNavigationTimeout(options.pageDefaultNavigationTimeout);
+  }
+
+  if (typeof options?.pageDefaultTimeout === "number") {
+    await page.setDefaultTimeout(options.pageDefaultTimeout);
+  }
+
   if (options?.blockResource) {
     await pageBlockResource(page, options.blockResource);
   }

@@ -131,6 +131,8 @@ export const customOptionsAutoScroll = Joi.object<
 });
 
 export const customOptions = Joi.object<CustomOptions, true>({
+  pageDefaultTimeout: Joi.number().min(0),
+  pageDefaultNavigationTimeout: Joi.number().min(0),
   autoScroll: customOptionsAutoScroll,
   blockResource: customOptionsBlockResource,
   checkIsGoToOk: Joi.boolean(),
