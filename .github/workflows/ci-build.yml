@@ -46,5 +46,5 @@ jobs:
               --build-arg GITHUB_SHA=${GITHUB_SHA} --build-arg GIT_BRANCH=${ref} --build-arg GITHUB_REF=${GITHUB_REF} \
               --platform linux/amd64,linux/arm64 \
               -t shibanet0/docker-browser:${ref} -t shibanet0/docker-browser:latest \
-              -f docker/Dockerfile \
+              -f Dockerfile \
               .
