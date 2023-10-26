@@ -80,7 +80,7 @@ const createServer = (cb: CreateServerCb) => {
 
 const createWs = (browserType: BrowserType) => {
   return createServer(async ({ req, closable, send }) => {
-    const browserServer = await browser.playwright.launchServer(
+    const {browserServer} = await browser.playwright.launchServer(
       req,
       browserType
     );

@@ -3,6 +3,7 @@ import { BrowserType, mergeLaunchOptions } from "../types.js";
 import { metrics } from "../metrics.js";
 import { IncomingMessage } from "node:http";
 import { getRequestOptions } from "./utils.js";
+import { getStealthPlaywright } from "./stealth/index.js";
 
 export const launch = async (
   req: IncomingMessage,
@@ -11,7 +12,10 @@ export const launch = async (
 ) => {
   const requestOptions = await getRequestOptions(req);
 
-  const browser = await playwright[browserType]
+  const browser = await (requestOptions.stealth
+    ? getStealthPlaywright(browserType)
+    : playwright[browserType]
+  )
     .launch({
       ...mergeLaunchOptions(browserType, options),
       proxy: requestOptions.proxy,
@@ -22,7 +26,7 @@ export const launch = async (
       return browser;
     });
 
-  return browser;
+  return { browser, requestOptions };
 };
 
 export const launchServer = async (
@@ -32,7 +36,10 @@ export const launchServer = async (
 ) => {
   const requestOptions = await getRequestOptions(req);
 
-  const browser = await playwright[browserType]
+  const browserServer = await (requestOptions.stealth
+    ? getStealthPlaywright(browserType)
+    : playwright[browserType]
+  )
     .launchServer({
       ...mergeLaunchOptions(browserType, options),
       proxy: requestOptions.proxy,
@@ -43,5 +50,5 @@ export const launchServer = async (
       return browser;
     });
 
-  return browser;
+  return { browserServer, requestOptions };
 };

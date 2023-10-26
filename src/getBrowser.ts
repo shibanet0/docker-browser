@@ -4,6 +4,7 @@ import { queue } from "./queue.js";
 import { ContextOptions } from "./apiTypes.js";
 import { browser as _browser } from "./browser/index.js";
 import { IncomingMessage } from "node:http";
+import { getStealthContext } from "./browser/stealth/index.js";
 
 interface DeviceDescriptor {
   viewport: {
@@ -57,7 +58,10 @@ export const getBrowser = async <T = unknown>(
 
   const [promise] = queue.add(
     async () => {
-      const browser = await _browser.playwright.launch(req, browserType);
+      const { browser, requestOptions } = await _browser.playwright.launch(
+        req,
+        browserType
+      );
 
       cancel = () => {
         browser.close();
@@ -69,22 +73,28 @@ export const getBrowser = async <T = unknown>(
       let err = undefined;
 
       try {
-        const context = await browser.newContext({
-          ...contextOptions,
-          extraHTTPHeaders:
-            (contextOptions.extraHTTPHeaders as { [key: string]: string }) ||
-            undefined,
+        const context = await browser
+          .newContext({
+            ...contextOptions,
+            extraHTTPHeaders:
+              (contextOptions.extraHTTPHeaders as { [key: string]: string }) ||
+              undefined,
 
-          viewport: {
-            height: contextOptions?.viewport?.height || device.viewport.height,
-            width: contextOptions?.viewport?.width || device.viewport.width,
-          },
-          userAgent: contextOptions?.userAgent || device.userAgent,
-          deviceScaleFactor:
-            contextOptions?.deviceScaleFactor || device.deviceScaleFactor,
-          isMobile: contextOptions?.isMobile || device.isMobile,
-          hasTouch: contextOptions?.hasTouch || device.hasTouch,
-        });
+            viewport: {
+              height:
+                contextOptions?.viewport?.height || device.viewport.height,
+              width: contextOptions?.viewport?.width || device.viewport.width,
+            },
+            userAgent: contextOptions?.userAgent || device.userAgent,
+            deviceScaleFactor:
+              contextOptions?.deviceScaleFactor || device.deviceScaleFactor,
+            isMobile: contextOptions?.isMobile || device.isMobile,
+            hasTouch: contextOptions?.hasTouch || device.hasTouch,
+          })
+          .then((context) => {
+            if (requestOptions.stealth) return getStealthContext(context);
+            return context;
+          });
 
         data = await cb(context, browser);
       } catch (error) {

@@ -18,7 +18,10 @@ const version: InfoResponse["version"] = {
     "adblock-rs": _versions.npm["adblock-rs"],
     dompurify: _versions.npm.dompurify,
     playwright: _versions.npm.playwright,
+    "playwright-core": _versions.npm["playwright-core"],
+    "playwright-extra": _versions.npm["playwright"],
     puppeteer: _versions.npm.puppeteer,
+    "puppeteer-extra-plugin-stealth": _versions.npm["puppeteer-extra-plugin-stealth"],
   },
   browser: {
     chromium: _versions.browser.chromium,

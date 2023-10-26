@@ -423,7 +423,10 @@ export interface InfoResponse {
       "adblock-rs": string;
       dompurify: string;
       playwright: string;
+      "playwright-core": string;
+      "playwright-extra": string;
       puppeteer: string;
+      "puppeteer-extra-plugin-stealth": string;
     };
     browser: {
       chromium: string;

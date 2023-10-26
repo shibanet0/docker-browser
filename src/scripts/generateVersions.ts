@@ -14,13 +14,13 @@ const dependencies = await new Promise<string>((resolve, reject) => {
   });
 }).then((res) => JSON.parse(res).at(0).dependencies);
 
-const npm = {
-  "@mozilla/readability": dependencies["@mozilla/readability"].version,
-  "adblock-rs": dependencies["adblock-rs"].version,
-  dompurify: dependencies["dompurify"].version,
-  playwright: dependencies["playwright"].version,
-  puppeteer: dependencies["puppeteer"].version,
-};
+const npm = Object.entries(dependencies).reduce<Record<string, string>>(
+  (acc, [key, value]) => {
+    acc[key] = (value as any).version;
+    return acc;
+  },
+  {}
+);
 
 const getPlaywrightWersion = (type: "chromium" | "firefox" | "webkit") => {
   return playwright[type].launch().then(async (browser) => {

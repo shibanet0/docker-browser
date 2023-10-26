@@ -863,13 +863,19 @@ components:
                 adblock-rs: { type: string }
                 dompurify: { type: string }
                 playwright: { type: string }
+                playwright-core: { type: string }
+                playwright-extra: { type: string }
                 puppeteer: { type: string }
+                puppeteer-extra-plugin-stealth: { type: string }
               required:
                 - "@mozilla/readability"
                 - adblock-rs
                 - dompurify
                 - playwright
+                - playwright-core
+                - playwright-extra
                 - puppeteer
+                - puppeteer-extra-plugin-stealth
             browser:
               type: object
               properties:
