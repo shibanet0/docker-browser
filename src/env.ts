@@ -40,8 +40,6 @@ const getTokenCheckerURL = () => {
 
 const parseBoolean = (value?: string) => value?.toLowerCase() === "true";
 
-const halfCPU = Math.max(1, Math.ceil(os.cpus().length / 2));
-
 export const env = {
   port: Number(process.env?.PORT || 8080),
   host: process.env?.HOST || "0.0.0.0",
@@ -57,6 +55,6 @@ export const env = {
 
   jobTimeout: Number(process.env?.JOB_TIMEOUT) || 5 * 60_000,
 
-  maxQueueLength: Number(process.env.MAX_QUEUE_LENGTH) || halfCPU,
-  maxParallelSessions: Number(process.env.MAX_PARALLEL_SESSIONS) || halfCPU,
+  maxQueueLength: Number(process.env.MAX_QUEUE_LENGTH) || 5,
+  maxParallelSessions: Number(process.env.MAX_PARALLEL_SESSIONS) || 5,
 };

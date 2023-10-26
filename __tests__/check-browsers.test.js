@@ -2,8 +2,7 @@ import http from "node:http";
 import playwright from "playwright";
 import puppeteer, { Browser } from "puppeteer";
 import { describe, beforeAll, afterAll, test, expect } from "vitest";
-import { env } from "../dist/env";
-import { exec } from "node:child_process";
+import * as utils from "./utils";
 
 const hostname = "127.0.0.1";
 const port = 3030;
@@ -15,31 +14,22 @@ const server = http.createServer((req, res) => {
   res.end("<!DOCTYPE html><html><head><title>TESTDATA</title></head></html>");
 });
 
-const appURL = `ws://${env.host === "0.0.0.0" ? "127.0.0.1" : env.host}:${
-  env.port
-}`;
+const appURL = `ws://${utils.hostname}:${utils.port}`;
 
-const appServer = exec("node --enable-source-maps ./dist/index.js", {
-  env: {
-    MAX_QUEUE_LENGTH: "5",
-    MAX_PARALLEL_SESSIONS: "5",
-  },
-});
+const appServer = new utils.AppServer();
 
 beforeAll(async () => {
-  await new Promise((resolve) => {
-    appServer.on("spawn", () => resolve(null));
-  }).then(() => new Promise((r) => setTimeout(r, 10_000)));
+  await appServer.start();
 
   await new Promise((resolve) => {
     server.listen(port, hostname, () => {
       resolve(null);
     });
   });
-}, 30_000);
+}, 5 * 60_000);
 
 afterAll(() => {
-  appServer.kill(9);
+  appServer.stop();
 
   return new Promise((resolve) => {
     server.close(() => {
