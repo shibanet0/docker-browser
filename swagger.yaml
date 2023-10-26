@@ -717,6 +717,9 @@ components:
     CustomOptions:
       type: object
       properties:
+        sleepAfterPageGoTo:
+          type: number
+          description: seconds
         pageDefaultTimeout:
           type: number
           description: |-

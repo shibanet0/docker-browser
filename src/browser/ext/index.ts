@@ -5,7 +5,9 @@ import { pageBlockResource } from "./pageBlockResource.js";
 
 export const pageBeforeGoto = async (page: Page, options?: CustomOptions) => {
   if (typeof options?.pageDefaultNavigationTimeout === "number") {
-    await page.setDefaultNavigationTimeout(options.pageDefaultNavigationTimeout);
+    await page.setDefaultNavigationTimeout(
+      options.pageDefaultNavigationTimeout
+    );
   }
 
   if (typeof options?.pageDefaultTimeout === "number") {
@@ -68,5 +70,10 @@ export const pageGoto = async (
 export const pageAfterGoto = async (page: Page, options?: CustomOptions) => {
   if (options?.autoScroll?.enable) {
     await pageAutoScroll(page, options.autoScroll);
+  }
+
+  if (options?.sleepAfterPageGoTo) {
+    const timeout = options.sleepAfterPageGoTo * 1000;
+    await new Promise((r) => setTimeout(r, timeout));
   }
 };
