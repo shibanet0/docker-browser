@@ -4,6 +4,7 @@ import { BrowserType } from "../types.js";
 import { getBrowser } from "../getBrowser.js";
 import { PdfRequest } from "../apiTypes.js";
 import { pdfRequest } from "../apiJoi.js";
+import { pageAfterGoto, pageBeforeGoto } from "../browser/ext/index.js";
 
 const handler =
   (browserType: BrowserType): HandlerFunc =>
@@ -16,7 +17,11 @@ const handler =
       body.contextOptions || {},
       async (context) => {
         const page = await context.newPage();
+
+        await pageBeforeGoto(page, body.customOptions)
         await page.goto(body.url, body.gotoOptions);
+        await pageAfterGoto(page, body.customOptions)
+
         const pdf = await page.pdf(body.options);
         return pdf;
       }

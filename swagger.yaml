@@ -673,10 +673,61 @@ components:
             - type: number
           description: |-
             Paper width, accepts values labeled with units.
-
+    CustomOptionsBlockResourceResourceType:
+      type: string
+      enum:
+        - "document"
+        - "stylesheet"
+        - "image"
+        - "media"
+        - "font"
+        - "script"
+        - "texttrack"
+        - "xhr"
+        - "fetch"
+        - "eventsource"
+        - "websocket"
+        - "manifest"
+        - "other"
+    CustomOptionsBlockResource:
+      type: object
+      properties:
+        url:
+          type: string
+        resourceType:
+          type: array
+          items:
+            $ref: "#/components/schemas/CustomOptionsBlockResourceResourceType"
+      required:
+        - url
+        - resourceType
+    CustomOptionsAutoScroll:
+      type: object
+      properties:
+        enable:
+          type: boolean
+        frequency:
+          type: number
+          default: 100
+        timing:
+          type: number
+          default: 100
+      required:
+        - enable
+    CustomOptions:
+      type: object
+      properties:
+        autoScroll:
+          $ref: "#/components/schemas/AutoScrollOptions"
+        blockResource:
+          type: array
+          items:
+            $ref: "#/components/schemas/CustomOptionsBlockResource"
     ScreenshotRequest:
       type: object
       properties:
+        customOptions:
+          $ref: "#/components/schemas/CustomOptions"
         gotoOptions:
           $ref: "#/components/schemas/GotoOptions"
         options:
@@ -690,6 +741,8 @@ components:
     ContentRequest:
       type: object
       properties:
+        customOptions:
+          $ref: "#/components/schemas/CustomOptions"
         gotoOptions:
           $ref: "#/components/schemas/GotoOptions"
         contextOptions:
@@ -701,6 +754,8 @@ components:
     PdfRequest:
       type: object
       properties:
+        customOptions:
+          $ref: "#/components/schemas/CustomOptions"
         gotoOptions:
           $ref: "#/components/schemas/GotoOptions"
         contextOptions:

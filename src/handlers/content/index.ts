@@ -9,6 +9,7 @@ import { JSDOM } from "jsdom";
 import { Readability } from "@mozilla/readability";
 import { getFavicon } from "./favicon.js";
 import { getOpenGraph } from "./opengraph.js";
+import { pageAfterGoto, pageBeforeGoto } from "../../browser/ext/index.js";
 
 const getContentExtra = (html: string): ContentExtraResponse => {
   const window = new JSDOM("").window;
@@ -40,7 +41,11 @@ const handler =
       body.contextOptions || {},
       async (context) => {
         const page = await context.newPage();
+
+        await pageBeforeGoto(page, body.customOptions);
         await page.goto(body.url, body.gotoOptions);
+        await pageAfterGoto(page, body.customOptions);
+
         const content = await page.content();
         return content;
       }

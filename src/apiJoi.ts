@@ -2,6 +2,10 @@ import Joi from "joi";
 import {
   ContentRequest,
   ContextOptions,
+  CustomOptions,
+  CustomOptionsAutoScroll,
+  CustomOptionsBlockResource,
+  CustomOptionsBlockResourceResourceType,
   GotoOptions,
   PdfRequest,
   PdfRequestOptions,
@@ -102,7 +106,37 @@ const pdfRequestOptions = Joi.object<PdfRequestOptions, true>({
   width: Joi.alternatives(Joi.string(), Joi.number()),
 });
 
+export const customOptionsBlockResource = Joi.array<
+  CustomOptionsBlockResource[]
+>().items(
+  Joi.object<CustomOptionsBlockResource, true>({
+    url: Joi.string().required(),
+    resourceType: Joi.array()
+      .items(
+        Joi.string().valid(
+          ...Object.values(CustomOptionsBlockResourceResourceType)
+        )
+      )
+      .required(),
+  })
+);
+
+export const customOptionsAutoScroll = Joi.object<
+  CustomOptionsAutoScroll,
+  true
+>({
+  enable: Joi.boolean().required(),
+  frequency: Joi.number(),
+  timing: Joi.number(),
+});
+
+export const customOptions = Joi.object<CustomOptions, true>({
+  autoScroll: customOptionsAutoScroll,
+  blockResource: customOptionsBlockResource,
+});
+
 export const screenshotRequest = Joi.object<ScreenshotRequest, true>({
+  customOptions,
   gotoOptions,
   contextOptions,
   options: screenshotRequestOptions,
@@ -110,12 +144,14 @@ export const screenshotRequest = Joi.object<ScreenshotRequest, true>({
 });
 
 export const contentRequest = Joi.object<ContentRequest, true>({
+  customOptions,
   gotoOptions,
   contextOptions,
   url: Joi.string().required(),
 });
 
 export const pdfRequest = Joi.object<PdfRequest, true>({
+  customOptions,
   gotoOptions,
   contextOptions,
   options: pdfRequestOptions,
