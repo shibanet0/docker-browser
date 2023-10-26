@@ -1,5 +1,4 @@
 import { BrowserType } from "./types.js";
-import os from "node:os";
 
 const parseArgs = (envName: string) => {
   return process.env?.[envName]?.trim()?.split(/\s+/g);
@@ -53,7 +52,7 @@ export const env = {
   enableCors: parseBoolean(process.env.ENABLE_CORS),
   // DEFAULT_IGNORE_HTTPS_ERRORS
 
-  jobTimeout: Number(process.env?.JOB_TIMEOUT) || 5 * 60_000,
+  jobTimeout: Number(process.env?.JOB_TIMEOUT || 60) * 1_000,
 
   maxQueueLength: Number(process.env.MAX_QUEUE_LENGTH) || 5,
   maxParallelSessions: Number(process.env.MAX_PARALLEL_SESSIONS) || 5,
